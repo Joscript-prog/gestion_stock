@@ -91,7 +91,7 @@
     const SUPABASE_URL = 'https://vedspojsrvnxrbazdbpo.supabase.co';
     const SUPABASE_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlZHNwb2pzcnZueHJiYXpkYnBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NTgyOTMsImV4cCI6MjA2NjQzNDI5M30.hwSYoO5uFiSS7zGc7HE_lq6ya5CtauZR5CL-tFANaf0';
 
-    // Correction ici : window.supabase.createClient (compatibilité CDN)
+    // Initialisation du client Supabase (CDN v2)
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_API_KEY);
 
     // Vérifier la session utilisateur au chargement
