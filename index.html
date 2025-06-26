@@ -57,14 +57,13 @@
     const SUPABASE_URL = 'https://vedspojsrvnxrbazdbpo.supabase.co';
     const SUPABASE_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlZHNwb2pzcnZueHJiYXpkYnBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NTgyOTMsImV4cCI6MjA2NjQzNDI5M30.hwSYoO5uFiSS7zGc7HE_lq6ya5CtauZR5CL-tFANaf0'; // Votre clé anon/public
 
-    // Correction ici : utilisez window.supabase.createClient
+    // Crée le client Supabase
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_API_KEY);
 
     // Fonction de redirection après connexion
     async function redirectToDashboard() {
         const { data: { session } } = await supabase.auth.getSession();
         if (session) {
-            // Redirige vers votre page de gestion (gestion2.html)
             window.location.href = 'gestion2.html';
         }
     }
@@ -88,7 +87,6 @@
 
             loginStatus.className = 'status mt-4 text-center text-sm text-green-700';
             loginStatus.textContent = 'Connexion réussie ! Redirection...';
-            // Rediriger après un court délai pour que le message soit visible
             setTimeout(() => {
                 window.location.href = 'gestion2.html';
             }, 1500);
@@ -108,7 +106,6 @@
         const signupStatus = document.getElementById('signupStatus');
 
         try {
-            // Ajout d'emailRedirectTo pour garantir la redirection sur gestion2.html après confirmation
             const { data, error } = await supabase.auth.signUp({
                 email,
                 password,
@@ -124,9 +121,8 @@
             if (data.user && data.user.identities && data.user.identities.length > 0) {
                  signupStatus.className = 'status mt-4 text-center text-sm text-green-700';
                  signupStatus.textContent = 'Inscription réussie ! Veuillez vérifier votre email pour confirmer votre compte.';
-                 e.target.reset(); // Réinitialise le formulaire après inscription
+                 e.target.reset();
             } else {
-                 // Cas où l'email de confirmation est envoyé mais l'utilisateur n'est pas encore connecté
                  signupStatus.className = 'status mt-4 text-center text-sm text-yellow-700';
                  signupStatus.textContent = 'Inscription initiée. Un email de confirmation a été envoyé. Veuillez vérifier votre boîte de réception.';
                  e.target.reset();
@@ -134,7 +130,7 @@
         } catch (error) {
             console.error('Erreur d\'inscription:', error.message);
             signupStatus.className = 'status mt-4 text-center text-sm text-red-700';
-            signupStatus.textContent = `Erreur d\'inscription: ${error.message}`;
+            signupStatus.textContent = `Erreur d'inscription: ${error.message}`;
         }
     });
 
@@ -143,13 +139,12 @@
         if (event === 'SIGNED_IN') {
             redirectToDashboard();
         } else if (event === 'SIGNED_OUT') {
-            // Si l'utilisateur se déconnecte depuis gestion2.html, le rediriger ici
+            // Redirige vers index.html si déconnexion depuis une autre page
             if (window.location.pathname.includes('gestion2.html')) {
-                window.location.href = 'index.html'; // Ou la page de connexion
+                window.location.href = 'index.html';
             }
         }
     });
 </script>
-
 </body>
 </html>
