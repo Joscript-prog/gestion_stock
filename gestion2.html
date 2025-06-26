@@ -65,14 +65,12 @@
 
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_API_KEY);
 
-    // Vidage des champs pour contrer l'autofill navigateur (fonctionne dans la plupart des cas)
+    // Vidage des champs pour contrer l'autofill navigateur
     window.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => {
-        document.getElementById('loginEmail').value = '';
-        document.getElementById('loginPassword').value = '';
-        document.getElementById('signupEmail').value = '';
-        document.getElementById('signupPassword').value = '';
-      }, 50);
+      document.getElementById('loginEmail').value = '';
+      document.getElementById('loginPassword').value = '';
+      document.getElementById('signupEmail').value = '';
+      document.getElementById('signupPassword').value = '';
     });
 
     // Fonction de redirection après connexion
