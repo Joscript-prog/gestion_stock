@@ -61,6 +61,10 @@
         <div>
           <label for="articleSelect" class="block text-gray-700 text-sm font-bold mb-2">Article :</label>
           <select id="articleSelect" required class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"></select>
+          <!-- Bouton "État" juste sous le select Article -->
+          <button type="button" id="etatBtn" class="mt-2 bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 w-full">
+            État de l'article sélectionné
+          </button>
         </div>
         <div>
           <label for="type" class="block text-gray-700 text-sm font-bold mb-2">Type :</label>
@@ -82,6 +86,17 @@
         </button>
       </form>
       <div id="mouvementStatus" class="status mt-4 text-center text-sm"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal État Article -->
+<div id="etatModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-sm p-6 relative">
+    <button id="closeEtatModal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-900 text-2xl">&times;</button>
+    <h3 class="text-xl font-bold mb-4">État de l'article</h3>
+    <div id="etatModalContent" class="space-y-2 text-gray-800">
+      <!-- Les infos seront injectées ici -->
     </div>
   </div>
 </div>
@@ -193,6 +208,59 @@
         }
     });
 
+    // Bouton "État" pour afficher le modal d'état de l'article sélectionné
+    document.getElementById('etatBtn').addEventListener('click', async () => {
+      const articleId = document.getElementById('articleSelect').value;
+      const modal = document.getElementById('etatModal');
+      const content = document.getElementById('etatModalContent');
+      if (!articleId) {
+        content.innerHTML = "<div class='text-red-600'>Veuillez sélectionner un article.</div>";
+        modal.classList.remove('hidden');
+        return;
+      }
+      // 1. Info stock actuel
+      const { data: article, error: errorArticle } = await supabase
+        .from('articles')
+        .select('nom, stock')
+        .eq('id', articleId)
+        .single();
+
+      // 2. Dernier mouvement
+      const { data: dernierMouvement, error: errorMvt } = await supabase
+        .from('stock_mouvements')
+        .select('date, utilisateur')
+        .eq('article_id', articleId)
+        .order('date', { ascending: false })
+        .limit(1)
+        .single();
+
+      let html = '';
+      if (errorArticle || !article) {
+        html = "<div class='text-red-600'>Article introuvable.</div>";
+      } else {
+        html += `<div><strong>Article :</strong> ${article.nom}</div>`;
+        html += `<div><strong>Stock actuel :</strong> ${article.stock ?? 'N/A'}</div>`;
+      }
+      if (dernierMouvement) {
+        html += `<div><strong>Dernier mouvement :</strong> ${dernierMouvement.date ? new Date(dernierMouvement.date).toLocaleString() : 'N/A'}</div>`;
+        html += `<div><strong>Utilisateur :</strong> ${dernierMouvement.utilisateur ?? 'N/A'}</div>`;
+      } else {
+        html += `<div><strong>Dernier mouvement :</strong> Aucun</div>`;
+      }
+      content.innerHTML = html;
+      modal.classList.remove('hidden');
+    });
+
+    // Fermer le modal
+    document.getElementById('closeEtatModal').onclick = () => {
+      document.getElementById('etatModal').classList.add('hidden');
+    };
+    document.getElementById('etatModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.classList.add('hidden');
+      }
+    });
+
     // Déconnexion opérationnelle
     document.getElementById('logoutButton').addEventListener('click', async () => {
         const { error } = await supabase.auth.signOut();
@@ -202,7 +270,6 @@
             window.location.href = 'index.html';
         }
     });
-
     // Redirection automatique si l'utilisateur se déconnecte dans un autre onglet
     supabase.auth.onAuthStateChange((event, session) => {
         if (event === 'SIGNED_OUT') {
