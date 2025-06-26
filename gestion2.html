@@ -6,21 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
-    /* Custom scrollbar for better aesthetics */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #888;
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #555;
-    }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #555; }
   </style>
 </head>
 <body class="bg-gray-100 p-6">
@@ -34,7 +23,6 @@
     </button>
   </div>
 
-
   <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
     <div class="bg-blue-50 p-6 rounded-lg shadow-md">
@@ -44,27 +32,22 @@
           <label for="nom" class="block text-gray-700 text-sm font-bold mb-2">Nom :</label>
           <input type="text" id="nom" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Nom de l'article" />
         </div>
-
         <div>
           <label for="categorie" class="block text-gray-700 text-sm font-bold mb-2">Catégorie :</label>
           <input type="text" id="categorie" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ex: Électronique, Vêtements" />
         </div>
-
         <div>
           <label for="prix_achat" class="block text-gray-700 text-sm font-bold mb-2">Prix d'achat :</label>
           <input type="number" id="prix_achat" min="0" step="0.01" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="0.00" />
         </div>
-
         <div>
           <label for="prix_vente" class="block text-gray-700 text-sm font-bold mb-2">Prix de vente :</label>
           <input type="number" id="prix_vente" min="0" step="0.01" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="0.00" />
         </div>
-
         <div>
           <label for="seuil_min" class="block text-gray-700 text-sm font-bold mb-2">Seuil minimum :</label>
           <input type="number" id="seuil_min" min="0" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Quantité minimale" />
         </div>
-
         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 w-full">
           Ajouter l'article
         </button>
@@ -77,10 +60,8 @@
       <form id="mouvementForm" class="space-y-4">
         <div>
           <label for="articleSelect" class="block text-gray-700 text-sm font-bold mb-2">Article :</label>
-          <select id="articleSelect" required class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
-            </select>
+          <select id="articleSelect" required class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"></select>
         </div>
-
         <div>
           <label for="type" class="block text-gray-700 text-sm font-bold mb-2">Type :</label>
           <select id="type" required class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
@@ -88,68 +69,51 @@
             <option value="sortie">Sortie</option>
           </select>
         </div>
-
         <div>
           <label for="quantite" class="block text-gray-700 text-sm font-bold mb-2">Quantité :</label>
           <input type="number" id="quantite" min="1" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="Quantité" />
         </div>
-
         <div>
           <label for="commentaire" class="block text-gray-700 text-sm font-bold mb-2">Commentaire :</label>
           <input type="text" id="commentaire" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="Facultatif" />
         </div>
-
         <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 w-full">
           Enregistrer le mouvement
         </button>
       </form>
       <div id="mouvementStatus" class="status mt-4 text-center text-sm"></div>
     </div>
-
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
     const SUPABASE_URL = 'https://vedspojsrvnxrbazdbpo.supabase.co';
-    const SUPABASE_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlZHNwb2pzcnZueHJiYXpkYnBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NTgyOTMsImV4cCI6MjA2NjQzNDI5M30.hwSYoO5uFiSS7zGc7HE_lq6ya5CtauZR5CL-tFANaf0'; // Votre clé anon/public
+    const SUPABASE_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlZHNwb2pzcnZueHJiYXpkYnBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NTgyOTMsImV4cCI6MjA2NjQzNDI5M30.hwSYoO5uFiSS7zGc7HE_lq6ya5CtauZR5CL-tFANaf0';
 
-    // Initialize Supabase client
-    const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_API_KEY);
+    // Correction ici : window.supabase.createClient (compatibilité CDN)
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_API_KEY);
 
-    // Fonction pour vérifier la session utilisateur
+    // Vérifier la session utilisateur au chargement
     async function checkUserSession() {
         const { data: { session }, error } = await supabase.auth.getSession();
-
         if (error || !session) {
-            console.error("Pas de session active, redirection vers la page de connexion.", error);
-            window.location.href = 'index.html'; // Redirige vers votre page de connexion/inscription
+            window.location.href = 'index.html';
         } else {
-            console.log("Utilisateur connecté:", session.user.email);
-            // Si l'utilisateur est connecté, charger les articles
             loadArticles();
         }
     }
-
-    // Déclencher la vérification de session au chargement de la page
     checkUserSession();
 
-
-    // Fonction pour charger les articles depuis Supabase et remplir le <select>
+    // Charger les articles pour le <select>
     async function loadArticles() {
         const select = document.getElementById('articleSelect');
-        select.innerHTML = ''; // vider options
-
+        select.innerHTML = '';
         try {
             const { data, error } = await supabase
                 .from('articles')
                 .select('id, nom');
-
-            if (error) {
-                throw new Error(error.message || 'Erreur lors du chargement des articles');
-            }
-
+            if (error) throw new Error(error.message || 'Erreur lors du chargement des articles');
             if (!data || data.length === 0) {
                 const option = document.createElement('option');
                 option.textContent = 'Aucun article disponible';
@@ -166,9 +130,7 @@
                 });
                 document.getElementById('mouvementForm').querySelector('button[type="submit"]').disabled = false;
             }
-
         } catch (error) {
-            console.error('Erreur chargement articles:', error);
             const option = document.createElement('option');
             option.textContent = 'Erreur chargement articles';
             option.disabled = true;
@@ -178,110 +140,75 @@
         }
     }
 
-
-    // Gérer l'ajout d'un nouvel article via Supabase
+    // Ajouter un article
     document.getElementById('articleForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-
         const nom = document.getElementById('nom').value.trim();
         const categorie = document.getElementById('categorie').value.trim();
         const prix_achat = parseFloat(document.getElementById('prix_achat').value);
         const prix_vente = parseFloat(document.getElementById('prix_vente').value);
         const seuil_min = parseInt(document.getElementById('seuil_min').value);
-
-        const payload = { nom, categorie, prix_achat, prix_vente, seuil_min };
         const articleStatus = document.getElementById('articleStatus');
-
         try {
             const { data, error } = await supabase
                 .from('articles')
-                .insert([payload])
-                .select(); // Use .select() to return the inserted data
-
-            if (error) {
-                throw new Error(error.message || 'Erreur lors de l\'ajout de l\'article');
-            }
-
+                .insert([{ nom, categorie, prix_achat, prix_vente, seuil_min }])
+                .select();
+            if (error) throw new Error(error.message || 'Erreur lors de l\'ajout de l\'article');
             articleStatus.className = 'status mt-4 text-center text-sm text-green-700';
             articleStatus.textContent = `✅ Article "${nom}" ajouté avec succès !`;
             e.target.reset();
-
-            await loadArticles(); // Recharger les articles dans le select mouvement
-
+            await loadArticles();
         } catch (error) {
-            console.error(error);
             articleStatus.className = 'status mt-4 text-center text-sm text-red-700';
-            articleStatus.textContent = `❌ Erreur lors de l\'ajout de l\'article: ${error.message}`;
+            articleStatus.textContent = `❌ Erreur lors de l'ajout de l'article: ${error.message}`;
         }
     });
 
-    // Gérer l'enregistrement d'un mouvement de stock
+    // Enregistrer un mouvement de stock
     document.getElementById('mouvementForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-
         const article_id = document.getElementById('articleSelect').value;
         const type = document.getElementById('type').value;
         const quantite = parseInt(document.getElementById('quantite').value);
         const commentaire = document.getElementById('commentaire').value.trim();
-
         const mouvementStatus = document.getElementById('mouvementStatus');
-
         if (!article_id || document.getElementById('articleSelect').options[document.getElementById('articleSelect').selectedIndex].disabled) {
             mouvementStatus.className = 'status mt-4 text-center text-sm text-red-700';
             mouvementStatus.textContent = '❌ Veuillez sélectionner un article valide.';
             return;
         }
-
-        const payload = {
-            article_id,
-            type,
-            quantite,
-            commentaire,
-            date: new Date().toISOString()
-        };
-
         try {
             const { data, error } = await supabase
                 .from('stock_mouvements')
-                .insert([payload])
+                .insert([{ article_id, type, quantite, commentaire, date: new Date().toISOString() }])
                 .select();
-
-            if (error) {
-                throw new Error(error.message || 'Erreur lors de l\'enregistrement du mouvement');
-            }
-
+            if (error) throw new Error(error.message || 'Erreur lors de l\'enregistrement du mouvement');
             mouvementStatus.className = 'status mt-4 text-center text-sm text-green-700';
             mouvementStatus.textContent = '✅ Mouvement enregistré avec succès !';
             e.target.reset();
-
         } catch (error) {
-            console.error(error);
             mouvementStatus.className = 'status mt-4 text-center text-sm text-red-700';
             mouvementStatus.textContent = `❌ Erreur lors de l’enregistrement: ${error.message}`;
         }
     });
 
-    // Gérer la déconnexion
+    // Déconnexion opérationnelle
     document.getElementById('logoutButton').addEventListener('click', async () => {
         const { error } = await supabase.auth.signOut();
         if (error) {
-            console.error('Erreur lors de la déconnexion:', error.message);
             alert('Erreur lors de la déconnexion: ' + error.message);
         } else {
-            console.log('Déconnexion réussie.');
-            window.location.href = 'index.html'; // Redirige vers la page de connexion
-        }
-    });
-
-    // Gérer les changements d'état d'authentification pour la redirection automatique
-    supabase.auth.onAuthStateChange((event, session) => {
-        if (event === 'SIGNED_OUT') {
-            // Si l'utilisateur est déconnecté (par exemple depuis une autre fenêtre ou un timeout de session)
             window.location.href = 'index.html';
         }
     });
 
+    // Redirection automatique si l'utilisateur se déconnecte dans un autre onglet
+    supabase.auth.onAuthStateChange((event, session) => {
+        if (event === 'SIGNED_OUT') {
+            window.location.href = 'index.html';
+        }
+    });
 </script>
-
 </body>
 </html>
