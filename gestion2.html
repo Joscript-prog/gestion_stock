@@ -33,8 +33,8 @@
           <input type="text" id="nom" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Nom de l'article" />
         </div>
         <div>
-  <label for="reference" class="block text-gray-700 text-sm font-bold mb-2">Référence :</label>
-  <input type="text" id="reference" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ex: CAH100CA" />
+          <label for="reference" class="block text-gray-700 text-sm font-bold mb-2">Référence :</label>
+          <input type="text" id="reference" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ex: CAH100CA" />
         </div>
         <div>
           <label for="categorie" class="block text-gray-700 text-sm font-bold mb-2">Catégorie :</label>
@@ -129,9 +129,10 @@
         const select = document.getElementById('articleSelect');
         select.innerHTML = '';
         try {
+            // NOTE: on sélectionne aussi la référence ici
             const { data, error } = await supabase
                 .from('articles')
-                .select('id, nom');
+                .select('id, reference, nom');
             if (error) throw new Error(error.message || 'Erreur lors du chargement des articles');
             if (!data || data.length === 0) {
                 const option = document.createElement('option');
@@ -143,8 +144,9 @@
             } else {
                 data.forEach(article => {
                     const option = document.createElement('option');
+                    // Affichage : référence - nom
                     option.value = article.id;
-                    option.textContent = article.nom;
+                    option.textContent = `${article.reference} - ${article.nom}`;
                     select.appendChild(option);
                 });
                 document.getElementById('mouvementForm').querySelector('button[type="submit"]').disabled = false;
@@ -163,6 +165,7 @@
     document.getElementById('articleForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const nom = document.getElementById('nom').value.trim();
+        const reference = document.getElementById('reference').value.trim();
         const categorie = document.getElementById('categorie').value.trim();
         const prix_achat = parseFloat(document.getElementById('prix_achat').value);
         const prix_vente = parseFloat(document.getElementById('prix_vente').value);
@@ -171,11 +174,11 @@
         try {
             const { data, error } = await supabase
                 .from('articles')
-                .insert([{ nom, categorie, prix_achat, prix_vente, seuil_min }])
+                .insert([{ reference, nom, categorie, prix_achat, prix_vente, seuil_min }])
                 .select();
             if (error) throw new Error(error.message || 'Erreur lors de l\'ajout de l\'article');
             articleStatus.className = 'status mt-4 text-center text-sm text-green-700';
-            articleStatus.textContent = `✅ Article "${nom}" ajouté avec succès !`;
+            articleStatus.textContent = `✅ Article "${reference} - ${nom}" ajouté avec succès !`;
             e.target.reset();
             await loadArticles();
         } catch (error) {
@@ -222,10 +225,10 @@
         modal.classList.remove('hidden');
         return;
       }
-      // 1. Info stock actuel
+      // 1. Info stock actuel (on sélectionne aussi la référence)
       const { data: article, error: errorArticle } = await supabase
         .from('articles')
-        .select('nom, stock')
+        .select('reference, nom, stock')
         .eq('id', articleId)
         .single();
 
@@ -242,6 +245,7 @@
       if (errorArticle || !article) {
         html = "<div class='text-red-600'>Article introuvable.</div>";
       } else {
+        html += `<div><strong>Référence :</strong> ${article.reference}</div>`;
         html += `<div><strong>Article :</strong> ${article.nom}</div>`;
         html += `<div><strong>Stock actuel :</strong> ${article.stock ?? 'N/A'}</div>`;
       }
