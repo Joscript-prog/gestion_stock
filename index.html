@@ -57,7 +57,8 @@
     const SUPABASE_URL = 'https://vedspojsrvnxrbazdbpo.supabase.co';
     const SUPABASE_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlZHNwb2pzcnZueHJiYXpkYnBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4NTgyOTMsImV4cCI6MjA2NjQzNDI5M30.hwSYoO5uFiSS7zGc7HE_lq6ya5CtauZR5CL-tFANaf0'; // Votre clé anon/public
 
-    const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_API_KEY);
+    // Correction ici : utilisez window.supabase.createClient
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_API_KEY);
 
     // Fonction de redirection après connexion
     async function redirectToDashboard() {
@@ -107,12 +108,12 @@
         const signupStatus = document.getElementById('signupStatus');
 
         try {
-            // Ajout d'emailRedirectTo pour garantir la redirection sur Github Pages après confirmation
+            // Ajout d'emailRedirectTo pour garantir la redirection sur gestion2.html après confirmation
             const { data, error } = await supabase.auth.signUp({
                 email,
                 password,
                 options: {
-                    emailRedirectTo: 'https://joscript-prog.github.io/gestion_stock/'
+                    emailRedirectTo: 'https://joscript-prog.github.io/gestion_stock/gestion2.html'
                 }
             });
 
